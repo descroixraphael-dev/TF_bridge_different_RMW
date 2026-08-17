@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>multi_robot_bridge</name>
+  <version>0.1.0</version>
+  <description>
+    Cross-domain relay that forwards ArUco-based drone-relative pose
+    detections from the Tello's ROS 2 graph (cyclonedds, domain 10) to
+    ASTRO's ROS 2 graph (rmw_zenoh_cpp, ASTRO domain), and publishes the
+    drone's pose as a TF transform in ASTRO's map frame.
+  </description>
+  <maintainer email="you@example.com">Mr</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>tf2_ros</depend>
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>python3-numpy</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
