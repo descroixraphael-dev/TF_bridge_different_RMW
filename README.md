@@ -76,7 +76,7 @@ in TCP instead — the rest of the pattern is unchanged.
 **Concretely, in this repo:** `process_a_tello_side.py` subscribes to
 `/tello/marker_pose` (`geometry_msgs/PoseStamped`, published by
 `aruco_detector.py`, expressed in the Tello camera's optical-frame
-convention) and relays it to `127.0.0.1:5599`. It runs under
+convention) and relays it. It runs under
 `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, `ROS_DOMAIN_ID=10` — the Tello's
 own environment.
 
@@ -178,5 +178,4 @@ background-thread socket listener. What changes:
   place to encode any fixed mounting/calibration offsets, whatever they
   are for your setup.
 - **Networking**: `RELAY_HOST`/`RELAY_PORT` need to match your actual
-  network layout — same idea as ASTRO/Tello (one relay talks to
-  `127.0.0.1` if both processes share a machine, or a real IP if not).
+  network layout — same idea as ASTRO/Tello.
