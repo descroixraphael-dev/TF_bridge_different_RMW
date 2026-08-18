@@ -26,34 +26,6 @@ import numpy as np
 def _identity_transform():
     return np.eye(4)
 
-
-# T_astro_base_link_marker: marker pose expressed in ASTRO's base_link frame.
-ASTRO_BASE_LINK_TO_MARKER = _identity_transform()
-
-# T_tello_base_link_camera: Tello camera pose (ROS/body-axis convention,
-# NOT optical convention) expressed in the Tello's own base_link frame.
-TELLO_BASE_LINK_TO_CAMERA = _identity_transform()
-
-# Fixed rotation from OpenCV's optical-frame axis convention
-# (x-right, y-down, z-forward) to the ROS body-axis convention
-# (x-forward, y-left, z-up), for a camera frame at the same physical
-# location/orientation. cv2.solvePnP's rvec/tvec (as used in
-# aruco_detector.py) are expressed in the optical convention, so any pose
-# coming out of /tello/marker_pose needs this applied before it can be
-# composed with frames that follow REP-103 (i.e. everything else in tf2).
-_OPTICAL_TO_ROS_R = np.array([
-    [0.0,  0.0, 1.0],
-    [-1.0, 0.0, 0.0],
-    [0.0, -1.0, 0.0],
-])
-OPTICAL_TO_ROS = np.eye(4)
-OPTICAL_TO_ROS[:3, :3] = _OPTICAL_TO_ROS_R
-
-
-# ---------------------------------------------------------------------------
-# Quaternion <-> matrix conversion
-# ---------------------------------------------------------------------------
-
 def quaternion_to_matrix(x, y, z, w):
     """[qx, qy, qz, qw] -> 3x3 rotation matrix."""
     n = x * x + y * y + z * z + w * w
@@ -138,6 +110,34 @@ def invert_transform(T):
     return T_inv
 
 
+
+
+
+# T_astro_base_link_marker: marker pose expressed in ASTRO's base_link frame.
+ASTRO_BASE_LINK_TO_MARKER =  translation_quaternion_to_matrix(
+    t=[0.0, 0.0, 0.0],
+    q=[0.0, 0.0, -0.7071068, 0.7071068],  # -90 deg about z
+)
+
+# T_tello_base_link_camera: Tello camera pose (ROS/body-axis convention,
+# NOT optical convention) expressed in the Tello's own base_link frame.
+TELLO_BASE_LINK_TO_CAMERA =_identity_transform()
+
+# Fixed rotation from OpenCV's optical-frame axis convention
+# (x-right, y-down, z-forward) to the ROS body-axis convention
+# (x-forward, y-left, z-up), for a camera frame at the same physical
+# location/orientation. cv2.solvePnP's rvec/tvec (as used in
+# aruco_detector.py) are expressed in the optical convention, so any pose
+# coming out of /tello/marker_pose needs this applied before it can be
+# composed with frames that follow REP-103 (i.e. everything else in tf2).
+_OPTICAL_TO_ROS_R = np.array([
+    [0.0,  0.0, 1.0],
+    [-1.0, 0.0, 0.0],
+    [0.0, -1.0, 0.0],
+])
+OPTICAL_TO_ROS = np.eye(4)
+OPTICAL_TO_ROS[:3, :3] = _OPTICAL_TO_ROS_R
+
 def ros_transform_to_matrix(transform):
     """geometry_msgs/Transform -> 4x4 homogeneous transform."""
     t = [transform.translation.x, transform.translation.y, transform.translation.z]
@@ -171,3 +171,4 @@ def compose_drone_pose_in_map(t_map_astro_base_link, marker_pos, marker_quat):
         @ invert_transform(TELLO_BASE_LINK_TO_CAMERA)
     )
     return T_map_tello_base_link
+

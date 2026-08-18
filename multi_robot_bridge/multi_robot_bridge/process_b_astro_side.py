@@ -46,13 +46,13 @@ TF_LOOKUP_TIMEOUT_SEC = 0.2
 # or sunk relative to the tf axis, that's why; nudge MESH_POSITION_OFFSET
 # below to compensate.
 MESH_RESOURCE_URI = 'package://multi_robot_bridge/meshes/drone.stl'
-MESH_SCALE = 0.001
+MESH_SCALE = 0.002
 # If the model faces the "wrong" direction once you see it move, adjust
 # this quaternion [x, y, z, w] to rotate the mesh into the frame's +x
 # forward, +z up convention -- identity assumes it's already authored
 # that way.
 MESH_ORIENTATION_OFFSET = [0.7071068, 0.0, 0.0, 0.7071068]
-MESH_POSITION_OFFSET =  [-0.0453, 0.0499, -0.0185]
+MESH_POSITION_OFFSET = [-0.0906, 0.0998, -0.0370]
 MESH_MARKER_PERIOD_SEC = 0.5
 
 
